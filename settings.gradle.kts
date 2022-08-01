@@ -1,0 +1,2 @@
+rootProject.name = "OrchidWatch-Ktor"
+
