@@ -4,6 +4,7 @@ import com.github.patrickpaul.dao.DatabaseFactory.dbQuery
 import com.github.patrickpaul.models.Product
 import com.github.patrickpaul.models.Products
 import com.github.patrickpaul.models.Store
+import io.ktor.server.util.*
 import org.jetbrains.exposed.sql.*
 
 class DAOFacadeImpl : DAOFacade {
@@ -22,11 +23,19 @@ class DAOFacadeImpl : DAOFacade {
             .map(::resultRowToProduct)
     }
 
-    override suspend fun product(id: Int): Product? = dbQuery {
+    override suspend fun productById(id: Int): Product? = dbQuery {
         Products
             .select { Products.id eq id }
             .map(::resultRowToProduct)
             .singleOrNull()
+    }
+
+    private suspend fun productByURL(url: String): Product? = dbQuery {
+        Products
+            .select { Products.url eq url }
+            .limit(1)
+            .singleOrNull()
+            ?.let { resultRowToProduct(it) }
     }
 
     override suspend fun addNewProduct(
@@ -35,16 +44,22 @@ class DAOFacadeImpl : DAOFacade {
         price: String,
         store: Store
     ): Product? = dbQuery {
-        val insertStatement = Products.insert {
-            it[Products.name] = name
-            it[Products.url] = url
-            it[Products.price] = price
-            it[Products.store] = store
+        val product = productByURL(url)
+        if (product == null) {
+            println("--------- Inserting new orchid ----------")
+            val insertStatement = Products.insert {
+                it[Products.name] = name
+                it[Products.url] = url
+                it[Products.price] = price
+                it[Products.store] = store
+            }
+            insertStatement
+                .resultedValues
+                ?.singleOrNull()
+                ?.let(::resultRowToProduct)
+        } else {
+            null
         }
-        insertStatement
-            .resultedValues
-            ?.singleOrNull()
-            ?.let(::resultRowToProduct)
     }
 
     override suspend fun editProduct(
@@ -66,6 +81,11 @@ class DAOFacadeImpl : DAOFacade {
     override suspend fun deleteProduct(id: Int): Boolean = dbQuery {
         Products
             .deleteWhere { Products.id eq id } > 0
+    }
+
+    override suspend fun deleteAllProducts(): Boolean = dbQuery {
+        Products
+            .deleteAll() > 0
     }
 }
 
