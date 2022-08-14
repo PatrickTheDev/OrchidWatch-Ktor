@@ -4,23 +4,39 @@ import com.github.patrickpaul.dao.DatabaseFactory.dbQuery
 import com.github.patrickpaul.models.Product
 import com.github.patrickpaul.models.Products
 import com.github.patrickpaul.models.Store
-import io.ktor.server.util.*
+import kotlinx.datetime.LocalDate
 import org.jetbrains.exposed.sql.*
 
-class DAOFacadeImpl : DAOFacade {
+class ProductDAOFacadeImpl : ProductDAOFacade {
 
     private fun resultRowToProduct(row: ResultRow) = Product(
         id = row[Products.id],
         name = row[Products.name],
         url = row[Products.url],
         price = row[Products.price],
-        store = row[Products.store]
+        store = row[Products.store],
+        inserted = row[Products.inserted]
     )
 
     override suspend fun allProducts(): List<Product> = dbQuery {
         Products
             .selectAll()
             .map(::resultRowToProduct)
+    }
+
+    override suspend fun allProductIds(): List<Int> = dbQuery {
+        val ids = mutableListOf<Int>()
+
+        Products
+            .slice(Products.id)
+            .selectAll()
+            .map {
+                ids.add(
+                    it[Products.id]
+                )
+            }
+
+        return@dbQuery ids
     }
 
     override suspend fun productById(id: Int): Product? = dbQuery {
@@ -42,16 +58,17 @@ class DAOFacadeImpl : DAOFacade {
         name: String,
         url: String,
         price: String,
-        store: Store
+        store: Store,
+        inserted: LocalDate
     ): Product? = dbQuery {
         val product = productByURL(url)
         if (product == null) {
-            println("--------- Inserting new orchid ----------")
             val insertStatement = Products.insert {
                 it[Products.name] = name
                 it[Products.url] = url
                 it[Products.price] = price
                 it[Products.store] = store
+                it[Products.inserted] = inserted
             }
             insertStatement
                 .resultedValues
@@ -60,22 +77,6 @@ class DAOFacadeImpl : DAOFacade {
         } else {
             null
         }
-    }
-
-    override suspend fun editProduct(
-        id: Int,
-        name: String,
-        url: String,
-        price: String,
-        store: Store
-    ): Boolean = dbQuery {
-        Products
-            .update({ Products.id eq id }) {
-                it[Products.name] = name
-                it[Products.url] = url
-                it[Products.price] = price
-                it[Products.store] = store
-            } > 0
     }
 
     override suspend fun deleteProduct(id: Int): Boolean = dbQuery {
@@ -87,6 +88,9 @@ class DAOFacadeImpl : DAOFacade {
         Products
             .deleteAll() > 0
     }
+
+    override suspend fun deleteAfterDays(days: Int): Int = dbQuery { 0 }
+
 }
 
-val dao: DAOFacade = DAOFacadeImpl()
+val dao: ProductDAOFacade = ProductDAOFacadeImpl()

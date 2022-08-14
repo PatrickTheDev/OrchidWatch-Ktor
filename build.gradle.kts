@@ -1,3 +1,4 @@
+val commons_codec_version: String by project
 val exposed_version: String by project
 val h2_version: String by project
 val koin_version: String by project
@@ -5,7 +6,6 @@ val kotlin_version: String by project
 val ktor_version: String by project
 val logback_version: String by project
 val playwright_version: String by project
-val quartz_version: String by project
 
 plugins {
     application
@@ -29,11 +29,18 @@ repositories {
     }
 }
 
+val sshAntTask = configurations.create("sshAntTask")
+
 dependencies {
+    implementation("commons-codec:commons-codec:$commons_codec_version")
+
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposed_version")
     implementation("com.h2database:h2:$h2_version")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
     implementation("io.insert-koin:koin-ktor:$koin_version")
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
@@ -43,6 +50,8 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-xml:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-cbor:$ktor_version")
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-server-auth-jvm:$ktor_version")
+    implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktor_version")
 
     implementation("io.ktor:ktor-server-auth:$ktor_version")
     implementation ("io.ktor:ktor-server-core:$ktor_version")
@@ -53,5 +62,5 @@ dependencies {
 
     implementation("com.microsoft.playwright:playwright:$playwright_version")
 
-    implementation("org.quartz-scheduler:quartz:$quartz_version")
+    sshAntTask("org.apache.ant:ant-jsch:1.10.12")
 }

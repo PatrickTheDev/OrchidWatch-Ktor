@@ -7,6 +7,10 @@ import com.microsoft.playwright.ElementHandle
 import com.microsoft.playwright.Playwright
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.todayIn
 import java.util.*
 
 class SchwerteScraper(private val browser: Browser) : ProductScraper(browser) {
@@ -25,7 +29,8 @@ class SchwerteScraper(private val browser: Browser) : ProductScraper(browser) {
                         getProductName(orchid),
                         getProductPrice(orchid),
                         getProductURL(orchid),
-                        getProductStore()
+                        getProductStore(),
+                        getProductDate()
                     )
                 )
             }
@@ -53,14 +58,14 @@ class SchwerteScraper(private val browser: Browser) : ProductScraper(browser) {
         val rawPrice = product
             .querySelector(PRODUCT_PRICE)
             .innerText()
-        val price = rawPrice.let {
-            it.substring(
-                it.indexOf("Preis") + 6,
-                it.indexOf("EUR") - 1
+        val price = rawPrice.run {
+            substring(
+                indexOf("Preis") + 6,
+                indexOf("EUR") - 1
             )
                 .trim()
                 .plus(" €")
-        }.also { println(it) }
+        }
         return price
     }
 

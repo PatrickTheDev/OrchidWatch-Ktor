@@ -5,7 +5,6 @@ import com.github.patrickpaul.models.Store
 import com.microsoft.playwright.Browser
 import com.microsoft.playwright.ElementHandle
 import java.util.*
-import java.util.stream.Collectors
 
 class CramerScraper(private val browser: Browser) : ProductScraper(browser) {
 
@@ -23,21 +22,14 @@ class CramerScraper(private val browser: Browser) : ProductScraper(browser) {
                         getProductName(orchid),
                         getProductPrice(orchid),
                         getProductURL(orchid),
-                        getProductStore()
+                        getProductStore(),
+                        getProductDate()
                     )
                 )
             }
             page.close()
         }
         return result
-    }
-
-    private fun getSoldOrchids(orchids: List<ElementHandle>): List<ElementHandle>? {
-        return orchids.stream()
-            .filter { orchid: ElementHandle ->
-                orchid.querySelectorAll(SOLD_LABEL).size > 0
-            }
-            .collect(Collectors.toList())
     }
 
     override fun getProductName(product: ElementHandle): String {
