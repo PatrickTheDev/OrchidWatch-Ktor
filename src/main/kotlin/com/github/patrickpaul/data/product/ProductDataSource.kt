@@ -1,10 +1,8 @@
-package com.github.patrickpaul.dao
+package com.github.patrickpaul.data.product
 
-import com.github.patrickpaul.models.Product
-import com.github.patrickpaul.models.Store
 import kotlinx.datetime.LocalDate
 
-interface ProductDAOFacade {
+interface ProductDataSource {
 
     suspend fun allProducts(): List<Product>
     suspend fun allProductIds(): List<Int>

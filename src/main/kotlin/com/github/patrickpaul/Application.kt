@@ -1,6 +1,6 @@
 package com.github.patrickpaul
 
-import com.github.patrickpaul.dao.DatabaseFactory
+import com.github.patrickpaul.data.DatabaseFactory
 import com.github.patrickpaul.plugins.*
 import com.github.patrickpaul.security.token.TokenConfig
 import com.github.patrickpaul.util.getKoinInstance

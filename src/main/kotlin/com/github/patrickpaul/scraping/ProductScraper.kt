@@ -1,7 +1,7 @@
 package com.github.patrickpaul.scraping
 
-import com.github.patrickpaul.models.Product
-import com.github.patrickpaul.models.Store
+import com.github.patrickpaul.data.product.Product
+import com.github.patrickpaul.data.product.Store
 import com.microsoft.playwright.Browser
 import com.microsoft.playwright.ElementHandle
 import kotlinx.datetime.Clock

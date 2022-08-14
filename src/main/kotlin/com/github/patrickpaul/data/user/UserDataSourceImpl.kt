@@ -1,6 +1,6 @@
 package com.github.patrickpaul.data.user
 
-import com.github.patrickpaul.dao.DatabaseFactory.dbQuery
+import com.github.patrickpaul.data.DatabaseFactory.dbQuery
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select

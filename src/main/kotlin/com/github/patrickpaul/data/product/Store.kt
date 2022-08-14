@@ -1,4 +1,4 @@
-package com.github.patrickpaul.models
+package com.github.patrickpaul.data.product
 
 /**
  * Stores that could be scraped.

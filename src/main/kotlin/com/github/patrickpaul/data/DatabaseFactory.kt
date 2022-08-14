@@ -1,7 +1,7 @@
-package com.github.patrickpaul.dao
+package com.github.patrickpaul.data
 
 import com.github.patrickpaul.data.user.Users
-import com.github.patrickpaul.models.Products
+import com.github.patrickpaul.data.product.Products
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils

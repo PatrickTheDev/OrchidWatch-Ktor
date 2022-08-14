@@ -1,13 +1,10 @@
-package com.github.patrickpaul.dao
+package com.github.patrickpaul.data.product
 
-import com.github.patrickpaul.dao.DatabaseFactory.dbQuery
-import com.github.patrickpaul.models.Product
-import com.github.patrickpaul.models.Products
-import com.github.patrickpaul.models.Store
+import com.github.patrickpaul.data.DatabaseFactory.dbQuery
 import kotlinx.datetime.LocalDate
 import org.jetbrains.exposed.sql.*
 
-class ProductDAOFacadeImpl : ProductDAOFacade {
+class ProductDAOFacadeImpl : ProductDataSource {
 
     private fun resultRowToProduct(row: ResultRow) = Product(
         id = row[Products.id],
@@ -93,4 +90,6 @@ class ProductDAOFacadeImpl : ProductDAOFacade {
 
 }
 
-val dao: ProductDAOFacade = ProductDAOFacadeImpl()
+
+// TODO: delete and refactor for DI with Koin
+val dao: ProductDataSource = ProductDAOFacadeImpl()

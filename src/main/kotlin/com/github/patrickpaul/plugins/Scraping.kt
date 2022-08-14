@@ -1,10 +1,10 @@
 package com.github.patrickpaul.plugins
 
-import com.github.patrickpaul.dao.dao
-import com.github.patrickpaul.models.Product
-import com.github.patrickpaul.scraping.CramerScraper
+import com.github.patrickpaul.data.product.dao
+import com.github.patrickpaul.data.product.Product
+import com.github.patrickpaul.scraping.scrapers.CramerScraper
 import com.github.patrickpaul.scraping.ProductScraper
-import com.github.patrickpaul.scraping.SchwerteScraper
+import com.github.patrickpaul.scraping.scrapers.SchwerteScraper
 import com.github.patrickpaul.util.getKoinInstance
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel

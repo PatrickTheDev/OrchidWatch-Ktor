@@ -1,16 +1,10 @@
-package com.github.patrickpaul.scraping
+package com.github.patrickpaul.scraping.scrapers
 
-import com.github.patrickpaul.models.Product
-import com.github.patrickpaul.models.Store
+import com.github.patrickpaul.data.product.Product
+import com.github.patrickpaul.data.product.Store
+import com.github.patrickpaul.scraping.ProductScraper
 import com.microsoft.playwright.Browser
 import com.microsoft.playwright.ElementHandle
-import com.microsoft.playwright.Playwright
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.todayIn
 import java.util.*
 
 class SchwerteScraper(private val browser: Browser) : ProductScraper(browser) {

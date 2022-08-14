@@ -1,4 +1,4 @@
-package com.github.patrickpaul.models
+package com.github.patrickpaul.data.product
 
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable

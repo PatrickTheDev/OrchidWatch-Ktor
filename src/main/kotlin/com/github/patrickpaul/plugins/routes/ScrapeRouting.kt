@@ -1,6 +1,6 @@
 package com.github.patrickpaul.plugins.routes
 
-import com.github.patrickpaul.dao.dao
+import com.github.patrickpaul.data.product.dao
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*

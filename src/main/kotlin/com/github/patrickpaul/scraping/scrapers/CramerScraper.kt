@@ -1,7 +1,8 @@
-package com.github.patrickpaul.scraping
+package com.github.patrickpaul.scraping.scrapers
 
-import com.github.patrickpaul.models.Product
-import com.github.patrickpaul.models.Store
+import com.github.patrickpaul.data.product.Product
+import com.github.patrickpaul.data.product.Store
+import com.github.patrickpaul.scraping.ProductScraper
 import com.microsoft.playwright.Browser
 import com.microsoft.playwright.ElementHandle
 import java.util.*
