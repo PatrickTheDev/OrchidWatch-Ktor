@@ -1,5 +1,6 @@
 package com.github.patrickpaul.dao
 
+import com.github.patrickpaul.data.user.Users
 import com.github.patrickpaul.models.Products
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
@@ -15,6 +16,7 @@ object DatabaseFactory {
         val database = Database.connect(jdbcURL, driverClassName)
         transaction(database) {
             SchemaUtils.create(Products)
+            SchemaUtils.create(Users)
         }
     }
 

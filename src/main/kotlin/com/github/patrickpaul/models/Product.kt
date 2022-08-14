@@ -34,7 +34,7 @@ data class Product(
     }
 }
 
-object Products : Table() {
+object Products : Table("products") {
 
     val id = integer("id").autoIncrement()
     val name = varchar("name", 256)
