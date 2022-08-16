@@ -7,13 +7,13 @@ import com.microsoft.playwright.Browser
 import com.microsoft.playwright.ElementHandle
 import java.util.*
 
-class SchwerteScraper(private val browser: Browser) : ProductScraper(browser) {
+class OrchidHouseScraper(private val browser: Browser) : ProductScraper(browser) {
 
     override fun scrape(): List<Product> {
         val result: MutableList<Product> = LinkedList()
         browser.let {
             val page = it.newPage()
-            page.navigate(schwerteShopNewUrl)
+            page.navigate(orchidHouseShopNewUrl)
             page.waitForTimeout(10000.0) // 10 seconds
             val orchids = page.querySelectorAll(PRODUCT_WRAPPER)
             for (orchid in orchids) {
@@ -44,51 +44,40 @@ class SchwerteScraper(private val browser: Browser) : ProductScraper(browser) {
         return name
     }
 
-    override fun getProductURL(product: ElementHandle): String {
-        var url = "error - url"
-        try {
-            val manipulatedUrl = product
-                .querySelector("a")
-                .getAttribute("href")
-            val index = manipulatedUrl.indexOf("&")
-            url = manipulatedUrl.substring(0, index)
-        } catch (e: NullPointerException) {
-            e.printStackTrace()
-        }
-        return url
-    }
-
     override fun getProductPrice(product: ElementHandle): String {
         var price = "error - price"
         try {
-            val rawPrice = product
+            price = product
                 .querySelector(PRODUCT_PRICE)
+                .querySelector("bdi")
                 .innerText()
-            price = rawPrice.run {
-                substring(
-                    indexOf("Preis") + 6,
-                    indexOf("EUR") - 1
-                )
-                    .trim()
-                    .plus(" €")
-            }
         } catch (e: NullPointerException) {
             e.printStackTrace()
         }
         return price
     }
 
-    override fun getProductStore(): Store {
-        return Store.SCHWERTE
+    override fun getProductURL(product: ElementHandle): String {
+        var url = "error - url"
+        try {
+            url = product
+                .querySelector("a")
+                .getAttribute("href")
+        } catch (e: NullPointerException) {
+            e.printStackTrace()
+        }
+        return url
     }
+
+    override fun getProductStore() = Store.ORCHID_HOUSE
 
     private companion object {
-        const val schwerteStartUrl = "https://shop.schwerter-orchideenzucht.de/"
-        const val schwerteShopNewUrl = "https://shop.schwerter-orchideenzucht.de/products_new.php"
+        const val orchidHouseStartUrl = "https://orchidhouseasia.com/"
+        const val orchidHouseShopNewUrl =
+            "https://orchidhouseasia.com/shop/?avia_extended_shop_select=yes&product_order=date"
 
-        const val PRODUCT_WRAPPER = ".p"
-        const val PRODUCT_NAME = "u"
-        const val PRODUCT_PRICE = "td:has-text(\"Preis\")"
+        const val PRODUCT_WRAPPER = ".inner_product"
+        const val PRODUCT_NAME = ".woocommerce-loop-product__title"
+        const val PRODUCT_PRICE = ".woocommerce-Price-amount"
     }
-
 }

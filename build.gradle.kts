@@ -88,47 +88,50 @@ ant.withGroovyBuilder {
     )
 }
 
-/*
 task("deploy") {
     dependsOn("clean", "shadowJar")
     ant.withGroovyBuilder {
         doLast {
             val knownHosts = File.createTempFile("knownhosts", "txt")
-            val user = "root"
-            val host = "145.14.158.77"
-            val key = file("keys/jwtauthkey-yt")
-            val jarFileName = "com.plcoding.ktor-jwt-auth-$version-all.jar"
+            val user = "admin"
+            val host = "81.169.178.117"
+            val port = "9489"
+            val key = file("keys/scraper")
+            val jarFileName = "com.github.patrickpaul.orchidwatch-ktor-$version-all.jar"
             try {
                 "scp"(
                     "file" to file("build/libs/$jarFileName"),
-                    "todir" to "$user@$host:/root/jwtauth",
+                    "todir" to "$user@$host:/home/admin",
                     "keyfile" to key,
                     "trust" to true,
                     "knownhosts" to knownHosts
                 )
                 "ssh"(
                     "host" to host,
+                    "port" to port,
                     "username" to user,
                     "keyfile" to key,
                     "trust" to true,
                     "knownhosts" to knownHosts,
-                    "command" to "mv /root/jwtauth/$jarFileName /root/jwtauth/jwtauth.jar"
+                    "command" to "mv /home/admin/Scraper/$jarFileName /home/admin/Scraper/scraper.jar"
                 )
                 "ssh"(
                     "host" to host,
+                    "port" to port,
                     "username" to user,
                     "keyfile" to key,
                     "trust" to true,
                     "knownhosts" to knownHosts,
-                    "command" to "systemctl stop jwtauth"
+                    "command" to "systemctl stop scraper"
                 )
                 "ssh"(
                     "host" to host,
+                    "port" to port,
                     "username" to user,
                     "keyfile" to key,
                     "trust" to true,
                     "knownhosts" to knownHosts,
-                    "command" to "systemctl start jwtauth"
+                    "command" to "systemctl start scraper"
                 )
             } finally {
                 knownHosts.delete()
@@ -136,4 +139,3 @@ task("deploy") {
         }
     }
 }
- */

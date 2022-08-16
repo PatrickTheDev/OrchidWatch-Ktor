@@ -2,8 +2,7 @@ package com.github.patrickpaul.plugins
 
 import com.github.patrickpaul.data.user.UserDataSource
 import com.github.patrickpaul.data.user.UserDataSourceImpl
-import com.github.patrickpaul.scraping.scrapers.CramerScraper
-import com.github.patrickpaul.scraping.scrapers.SchwerteScraper
+import com.github.patrickpaul.scraping.scrapers.*
 import com.github.patrickpaul.security.hashing.HashingService
 import com.github.patrickpaul.security.hashing.SHA256HashingService
 import com.github.patrickpaul.security.token.JwtTokenService
@@ -32,5 +31,10 @@ val mainModule = module {
     single { SHA256HashingService() as HashingService }
 
     single { CramerScraper( get() ) } withOptions { createdAtStart() }
+    single { HennisScraper( get() ) } withOptions { createdAtStart() }
+    single { KopfScraper( get() ) } withOptions { createdAtStart() }
+    single { OrchidHouseScraper( get() ) } withOptions { createdAtStart() }
     single { SchwerteScraper( get() ) } withOptions { createdAtStart() }
+    single { WichmannScraper( get() ) } withOptions { createdAtStart() }
+    single { WlodarczykScraper( get() ) } withOptions { createdAtStart() }
 }

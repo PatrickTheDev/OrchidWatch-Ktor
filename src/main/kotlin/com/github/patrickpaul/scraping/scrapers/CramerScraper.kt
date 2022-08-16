@@ -34,21 +34,43 @@ class CramerScraper(private val browser: Browser) : ProductScraper(browser) {
     }
 
     override fun getProductName(product: ElementHandle): String {
-        return product.querySelector(PRODUCT_TITLE).innerText()
+        var name = "error - name"
+        try {
+            name = product
+                .querySelector(PRODUCT_TITLE)
+                .innerText()
+        } catch(e: NullPointerException) {
+            e.printStackTrace()
+        }
+        return name
     }
 
     override fun getProductURL(product: ElementHandle): String {
-        return cramerShopUrl + product.querySelector(PRODUCT_URL).getAttribute("href")
+        var url = "error - url"
+        try {
+            url = cramerShopUrl + product
+                .querySelector(PRODUCT_URL)
+                .getAttribute("href")
+        } catch (e: NullPointerException) {
+            e.printStackTrace()
+        }
+        return url
     }
 
     override fun getProductPrice(product: ElementHandle): String {
-        val price = product.querySelector(PRODUCT_PRICE).innerText()
-        return price.replace(",", ".")
+        var price = "error - price"
+        try {
+            price = product
+                .querySelector(PRODUCT_PRICE)
+                .innerText()
+                .replace(",", ".")
+        } catch (e: NullPointerException) {
+            e.printStackTrace()
+        }
+        return price
     }
 
-    override fun getProductStore(): Store {
-        return Store.CRAMER
-    }
+    override fun getProductStore() = Store.CRAMER
 
     private companion object {
         const val cramerStartUrl = "https://www.cramer-orchideen.de/index.php"
