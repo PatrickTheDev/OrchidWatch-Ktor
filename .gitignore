@@ -25,6 +25,7 @@ gen/
 
 #IntelliJ files
 *.iml
+.idea
 .idea/
 misc.xml
 deploymentTargetDropDown.xml

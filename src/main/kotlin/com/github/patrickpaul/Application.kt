@@ -16,7 +16,8 @@ fun Application.module() {
         issuer = environment.config.property("jwt.issuer").toString(),
         audience = environment.config.property("jwt.audience").toString(),
         expiresIn = 365L * 1000L * 60L * 60L * 24L,
-        secret = System.getenv("JWT_SECRET")
+        secret = "7b0&N%b8nrd5ed03nty89smh9-7d8g&*)FG*^&D)FG_^FD^%)&fnn596e92536dff"
+        // System.getenv("JWT_SECRET")
     )
 
     configureDI()

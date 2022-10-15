@@ -1,7 +1,7 @@
 package com.github.patrickpaul.plugins
 
 import com.github.patrickpaul.data.user.UserDataSource
-import com.github.patrickpaul.plugins.routes.scraping
+import com.github.patrickpaul.plugins.routes.*
 import com.github.patrickpaul.security.hashing.HashingService
 import com.github.patrickpaul.security.token.TokenConfig
 import com.github.patrickpaul.security.token.TokenService

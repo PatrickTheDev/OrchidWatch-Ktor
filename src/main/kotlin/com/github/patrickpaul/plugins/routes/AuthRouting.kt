@@ -1,4 +1,4 @@
-package com.github.patrickpaul.plugins
+package com.github.patrickpaul.plugins.routes
 
 import com.github.patrickpaul.data.requests.AuthRequest
 import com.github.patrickpaul.data.responses.AuthResponse
