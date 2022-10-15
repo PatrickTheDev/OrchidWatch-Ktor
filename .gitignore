@@ -1,40 +1,51 @@
-build
-.gradle
+# Gradle files
+.gradle/
+build/
+/*/build/
 .gradletasknamecache
-.idea/*
-!.idea/runConfigurations
-!.idea/runConfigurations/*
-!.idea/vcs.xml
-!.idea/dictionaries
-!.idea/dictionaries/*
-!.idea/copyright
-!.idea/copyright/*
-!.idea/codeStyles
-!.idea/codeStyles/*
-!.idea/icon.png
-out
-*.iml
-.vscode
+out/
+gradle-user-home
 
-*.versionsBackup
-*.releaseBackup
-release.properties
+# Local configuration file (sdk path, etc)
 local.properties
-*.swp
 
-.video
-.attach_pid*
-apidoc
+# Log/OS Files
+*.log
 
+# Java class files
+*.class
 
+# Generated files
 bin/
 .settings
 .project
 .classpath
 .konan
+gen/
 
+#IntelliJ files
+*.iml
+.idea/
+misc.xml
+deploymentTargetDropDown.xml
+render.experimental.xml
+
+# Keystore files
+*.jks
+*.keystore
+*.p12
+*.pem
+
+# Miscellaneous
 .DS_Store
+*.versionsBackup
+*.releaseBackup
+release.properties
+*.swp
+.video
+.attach_pid*
+apidoc
 
-hs_err_pid*.log
 
-gradle-user-home
+# Custom
+keys/
