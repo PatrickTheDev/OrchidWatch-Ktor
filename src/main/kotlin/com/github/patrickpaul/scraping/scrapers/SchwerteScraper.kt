@@ -23,7 +23,8 @@ class SchwerteScraper(private val browser: Browser) : ProductScraper(browser) {
                         getProductPrice(orchid),
                         getProductURL(orchid),
                         getProductStore(),
-                        getProductDate()
+                        getProductDate(),
+                        getProductImageUrl(orchid)
                     )
                 )
             }
@@ -76,6 +77,20 @@ class SchwerteScraper(private val browser: Browser) : ProductScraper(browser) {
             e.printStackTrace()
         }
         return price
+    }
+
+    fun getProductImageUrl(product: ElementHandle): String {
+        var imageUrl = "error - imageUrl"
+        try {
+            val rawImageUrl = product
+                .querySelector("td")
+                .querySelector("img")
+                .getAttribute("src")
+            imageUrl = schwerteStartUrl + rawImageUrl
+        } catch (e: NullPointerException) {
+            e.printStackTrace()
+        }
+        return imageUrl
     }
 
     override fun getProductStore(): Store {

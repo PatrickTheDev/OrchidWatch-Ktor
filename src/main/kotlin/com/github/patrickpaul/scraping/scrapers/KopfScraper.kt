@@ -28,7 +28,8 @@ class KopfScraper(private val browser: Browser) : ProductScraper(browser) {
                             getProductPrice(orchid),
                             getProductURL(orchid),
                             getProductStore(),
-                            getProductDate()
+                            getProductDate(),
+                            ""
                         )
                     )
                 }

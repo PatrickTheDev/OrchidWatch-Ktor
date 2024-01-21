@@ -12,8 +12,9 @@ data class Product(
     val url: String,
     val price: String,
     val store: Store,
-    val inserted: LocalDate
-    ) {
+    val inserted: LocalDate,
+    val imageUrl: String,
+) {
 
     companion object {
         fun createProduct(
@@ -21,14 +22,16 @@ data class Product(
             price: String,
             url: String,
             store: Store,
-            inserted: LocalDate
+            inserted: LocalDate,
+            imageUrl: String,
         ): Product {
             return Product(
                 name = name,
                 price = price,
                 url = url,
                 store = store,
-                inserted = inserted
+                inserted = inserted,
+                imageUrl = imageUrl,
             )
         }
     }
@@ -42,6 +45,7 @@ object Products : Table("products") {
     val price = varchar("price", 256)
     val store = enumerationByName("store", 64, Store::class)
     val inserted = date("inserted")
+    val imageUrl = varchar("imageUrl", 512)
 
     override val primaryKey = PrimaryKey(id)
 

@@ -1,5 +1,7 @@
 package com.github.patrickpaul.plugins
 
+import com.github.patrickpaul.data.product.ProductDAOFacadeImpl
+import com.github.patrickpaul.data.product.ProductDataSource
 import com.github.patrickpaul.data.user.UserDataSource
 import com.github.patrickpaul.data.user.UserDataSourceImpl
 import com.github.patrickpaul.scraping.scrapers.*
@@ -25,7 +27,7 @@ fun Application.configureDI() {
 val mainModule = module {
     single { Playwright.create().firefox().launch() } withOptions { createdAtStart() }
 
-    // TODO: single { ProductDataSourceImpl() as ProductDataSource }
+    single { ProductDAOFacadeImpl() as ProductDataSource }
     single { UserDataSourceImpl() as UserDataSource }
     single { JwtTokenService() as TokenService }
     single { SHA256HashingService() as HashingService }

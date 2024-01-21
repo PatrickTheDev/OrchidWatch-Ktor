@@ -1,8 +1,9 @@
 package com.github.patrickpaul.data.product
 
 import com.github.patrickpaul.data.DatabaseFactory.dbQuery
-import kotlinx.datetime.LocalDate
+import kotlinx.datetime.*
 import org.jetbrains.exposed.sql.*
+import java.time.Period
 
 class ProductDAOFacadeImpl : ProductDataSource {
 
@@ -12,7 +13,8 @@ class ProductDAOFacadeImpl : ProductDataSource {
         url = row[Products.url],
         price = row[Products.price],
         store = row[Products.store],
-        inserted = row[Products.inserted]
+        inserted = row[Products.inserted],
+        imageUrl = row[Products.imageUrl],
     )
 
     override suspend fun allProducts(): List<Product> = dbQuery {
@@ -56,7 +58,8 @@ class ProductDAOFacadeImpl : ProductDataSource {
         url: String,
         price: String,
         store: Store,
-        inserted: LocalDate
+        inserted: LocalDate,
+        imageUrl: String,
     ): Product? = dbQuery {
         val product = productByURL(url)
         if (product == null) {
@@ -66,6 +69,7 @@ class ProductDAOFacadeImpl : ProductDataSource {
                 it[Products.price] = price
                 it[Products.store] = store
                 it[Products.inserted] = inserted
+                it[Products.imageUrl] = imageUrl
             }
             insertStatement
                 .resultedValues
@@ -86,7 +90,14 @@ class ProductDAOFacadeImpl : ProductDataSource {
             .deleteAll() > 0
     }
 
-    override suspend fun deleteAfterDays(days: Int): Int = dbQuery { 0 }
+    override suspend fun deleteAfterDays(days: Int): Int = dbQuery {
+        val startAt = Clock.System
+            .todayIn(TimeZone.currentSystemDefault())
+            .minus(DatePeriod(days = days))
+
+        Products
+            .deleteWhere { Products.inserted greaterEq startAt }
+    }
 
 }
 
