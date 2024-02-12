@@ -18,7 +18,7 @@ group = "com.github.patrickpaul"
 version = "1.0.0"
 application {
     mainClass.set("com.github.patrickpaul.ApplicationKt")
-    // project.setProperty("mainClassName", mainClass.get())
+    project.setProperty("mainClassName", mainClass.get())
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
