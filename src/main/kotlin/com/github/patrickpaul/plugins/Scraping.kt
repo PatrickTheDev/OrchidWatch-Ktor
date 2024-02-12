@@ -28,7 +28,7 @@ private fun scrape() {
     val scrapingJob = scrapeProductsPeriodically(
         getKoinInstance<CramerScraper>(),
         getKoinInstance<HennisScraper>(),
-        getKoinInstance<KopfScraper>(),
+        // getKoinInstance<KopfScraper>(),
         getKoinInstance<OrchidHouseScraper>(),
         getKoinInstance<SchwerteScraper>(),
         getKoinInstance<WichmannScraper>(),
