@@ -7,7 +7,7 @@ import com.microsoft.playwright.Browser
 import com.microsoft.playwright.ElementHandle
 import java.util.*
 
-class WlodarczykScraper(private val browser: Browser) : ProductScraper(browser) {
+class WlodarczykScraper(private val browser: Browser) : ProductScraper() {
 
     override fun scrape(): List<Product> {
         val result: MutableList<Product> = LinkedList<Product>()
@@ -74,8 +74,8 @@ class WlodarczykScraper(private val browser: Browser) : ProductScraper(browser) 
     override fun getProductStore() = Store.WLODARCZYK
 
     private companion object {
-        const val wlodarczykStartUrl = "https://www.orchideenwlodarczyk.de/shop/catalog/index.php"
-        const val wlodarczykShopNewUrl = "https://www.orchideenwlodarczyk.de/shop/catalog/products_new.php"
+        const val wlodarczykStartUrl = "https://www.orchideen.de/shop/catalog/index.php"
+        const val wlodarczykShopNewUrl = "https://www.orchideen.de/shop/catalog/products_new.php"
 
         const val PRODUCT_WRAPPER = ".item.col-sm-4.grid-group-item"
         const val PRODUCT_PRICE = ".price"

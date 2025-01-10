@@ -7,7 +7,7 @@ import com.microsoft.playwright.Browser
 import com.microsoft.playwright.ElementHandle
 import java.util.*
 
-class CramerScraper(private val browser: Browser) : ProductScraper(browser) {
+class CramerScraper(private val browser: Browser) : ProductScraper() {
 
     override fun scrape(): List<Product> {
         val result: MutableList<Product> = LinkedList()

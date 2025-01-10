@@ -1,6 +1,6 @@
 package com.github.patrickpaul.plugins.routes
 
-import com.github.patrickpaul.data.product.dao
+import com.github.patrickpaul.data.product.productDAO
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -12,10 +12,10 @@ fun Route.scraping() {
     authenticate {
         route("/products") {
             get {
-                call.respond(dao.allProducts())
+                call.respond(productDAO.allProducts())
             }
             delete {
-                call.respond(dao.deleteAllProducts())
+                call.respond(productDAO.deleteAllProducts())
             }
 
             get("/{id?}") {
@@ -23,14 +23,14 @@ fun Route.scraping() {
                     "Missing id",
                     status = HttpStatusCode.BadRequest,
                 )
-                val product = dao.productById(id) ?: return@get call.respondText(
+                val product = productDAO.productById(id) ?: return@get call.respondText(
                     "No product found with $id",
                     status = HttpStatusCode.NotFound,
                 )
                 call.respond(product)
             }
             get("/count") {
-                call.respond(dao.allProducts().size)
+                call.respond(productDAO.allProducts().size)
             }
             get("/diff") {
                 val parameters = call.receiveParameters()
@@ -51,19 +51,19 @@ fun Route.scraping() {
                 val clientIds = clientIdsString
                     .split(",")
                     .mapNotNull { it.toIntOrNull() }
-                val serverIds = dao
+                val serverIds = productDAO
                     .allProductIds()
                     .toMutableList()
                 val diff = (clientIds + serverIds)
                     .groupBy { it }
                     .filter { it.value.size == 1 }
                     .flatMap { it.value }
-                val products = diff.mapNotNull { dao.productById(it) }
+                val products = diff.mapNotNull { productDAO.productById(it) }
 
                 call.respond(products)
             }
             get("/ids") {
-                call.respond(dao.allProductIds())
+                call.respond(productDAO.allProductIds())
             }
         }
     }

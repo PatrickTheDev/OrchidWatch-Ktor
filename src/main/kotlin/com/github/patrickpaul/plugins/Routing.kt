@@ -1,6 +1,9 @@
 package com.github.patrickpaul.plugins
 
 import com.github.patrickpaul.data.product.ProductDataSource
+import com.github.patrickpaul.data.product.productDAO
+import com.github.patrickpaul.data.scraper.ScraperDataSource
+import com.github.patrickpaul.data.scraper.scraperDAO
 import com.github.patrickpaul.data.user.UserDataSource
 import com.github.patrickpaul.plugins.routes.*
 import com.github.patrickpaul.security.hashing.HashingService
@@ -16,8 +19,13 @@ fun Application.configureRouting(
 ) {
     routing {
         // TODO: securityRouting()
+
+        healthRouting(
+            scraperDao = scraperDAO,
+        )
+
         productsRouting(
-            productDao = getKoinInstance(),
+            productDao = productDAO,
         )
     }
 }
@@ -33,6 +41,17 @@ private fun Route.securityRouting(
     authenticate()
     getSecretInfo()
     scraping()
+}
+
+private fun Route.healthRouting(
+    scraperDao: ScraperDataSource,
+) {
+    route("/health") {
+        get {
+            val scrapers = scraperDao.allScrapers()
+            call.respond(HttpStatusCode.OK, scrapers)
+        }
+    }
 }
 
 private fun Route.productsRouting(

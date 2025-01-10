@@ -1,9 +1,10 @@
 package com.github.patrickpaul.data.product
 
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.kotlin.datetime.date
+import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 
 @Serializable
 data class Product(
@@ -12,7 +13,7 @@ data class Product(
     val url: String,
     val price: String,
     val store: Store,
-    val inserted: LocalDate,
+    val inserted: LocalDateTime,
     val imageUrl: String,
 ) {
 
@@ -22,7 +23,7 @@ data class Product(
             price: String,
             url: String,
             store: Store,
-            inserted: LocalDate,
+            inserted: LocalDateTime,
             imageUrl: String,
         ): Product {
             return Product(
@@ -44,9 +45,8 @@ object Products : Table("products") {
     val url = varchar("url", 512)
     val price = varchar("price", 256)
     val store = enumerationByName("store", 64, Store::class)
-    val inserted = date("inserted")
+    val inserted = datetime("inserted")
     val imageUrl = varchar("imageUrl", 512)
 
     override val primaryKey = PrimaryKey(id)
-
 }

@@ -5,9 +5,10 @@ import com.github.patrickpaul.data.product.Store
 import com.github.patrickpaul.scraping.ProductScraper
 import com.microsoft.playwright.Browser
 import com.microsoft.playwright.ElementHandle
+import java.net.URLEncoder
 import java.util.*
 
-class SchwerteScraper(private val browser: Browser) : ProductScraper(browser) {
+class SchwerteScraper(private val browser: Browser) : ProductScraper() {
 
     override fun scrape(): List<Product> {
         val result: MutableList<Product> = LinkedList()
@@ -82,11 +83,23 @@ class SchwerteScraper(private val browser: Browser) : ProductScraper(browser) {
     fun getProductImageUrl(product: ElementHandle): String {
         var imageUrl = "error - imageUrl"
         try {
-            val rawImageUrl = product
+            val lowQualityImageUrlPath = product
                 .querySelector("td")
                 .querySelector("img")
                 .getAttribute("src")
-            imageUrl = schwerteStartUrl + rawImageUrl
+
+            val indices = mutableListOf<Int>()
+            lowQualityImageUrlPath.toCharArray().forEachIndexed { index, char ->
+                if (char == '/') {
+                    indices.add(index)
+                }
+            }
+
+            val lowQualityImageUrlFirstPart = lowQualityImageUrlPath.substring(0, indices[2] + 1)
+            val length = lowQualityImageUrlPath.length
+            val lowQualityImageUrlLastPart = lowQualityImageUrlPath.substring(indices[5], length)
+
+            imageUrl = schwerteStartUrl + lowQualityImageUrlFirstPart + "640/480/FFFFFF" + lowQualityImageUrlLastPart
         } catch (e: NullPointerException) {
             e.printStackTrace()
         }
@@ -98,7 +111,7 @@ class SchwerteScraper(private val browser: Browser) : ProductScraper(browser) {
     }
 
     private companion object {
-        const val schwerteStartUrl = "https://shop.schwerter-orchideenzucht.de/"
+        const val schwerteStartUrl = "https://shop.schwerter-orchideenzucht.de"
         const val schwerteShopNewUrl = "https://shop.schwerter-orchideenzucht.de/products_new.php"
 
         const val PRODUCT_WRAPPER = ".p"

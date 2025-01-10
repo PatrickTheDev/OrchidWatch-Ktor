@@ -3,7 +3,9 @@ package com.github.patrickpaul.data.product
 import com.github.patrickpaul.data.DatabaseFactory.dbQuery
 import kotlinx.datetime.*
 import org.jetbrains.exposed.sql.*
-import java.time.Period
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalAmount
+import java.time.temporal.TemporalUnit
 
 class ProductDAOFacadeImpl : ProductDataSource {
 
@@ -20,6 +22,7 @@ class ProductDAOFacadeImpl : ProductDataSource {
     override suspend fun allProducts(): List<Product> = dbQuery {
         Products
             .selectAll()
+            .orderBy(Products.inserted to SortOrder.DESC)
             .map(::resultRowToProduct)
     }
 
@@ -58,7 +61,7 @@ class ProductDAOFacadeImpl : ProductDataSource {
         url: String,
         price: String,
         store: Store,
-        inserted: LocalDate,
+        inserted: LocalDateTime,
         imageUrl: String,
     ): Product? = dbQuery {
         val product = productByURL(url)
@@ -92,8 +95,11 @@ class ProductDAOFacadeImpl : ProductDataSource {
 
     override suspend fun deleteAfterDays(days: Int): Int = dbQuery {
         val startAt = Clock.System
-            .todayIn(TimeZone.currentSystemDefault())
-            .minus(DatePeriod(days = days))
+            .now()
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .toJavaLocalDateTime()
+            .minus(days.toLong(), ChronoUnit.DAYS)
+            .toKotlinLocalDateTime()
 
         Products
             .deleteWhere { Products.inserted greaterEq startAt }
@@ -103,4 +109,4 @@ class ProductDAOFacadeImpl : ProductDataSource {
 
 
 // TODO: delete and refactor for DI with Koin
-val dao: ProductDataSource = ProductDAOFacadeImpl()
+val productDAO: ProductDataSource = ProductDAOFacadeImpl()
