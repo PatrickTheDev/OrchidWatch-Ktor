@@ -25,7 +25,7 @@ class WlodarczykScraper(private val browser: Browser) : ProductScraper() {
                         getProductURL(orchid),
                         getProductStore(),
                         getProductDate(),
-                        ""
+                        getProductImageUrl(orchid),
                     )
                 )
             }
@@ -69,6 +69,20 @@ class WlodarczykScraper(private val browser: Browser) : ProductScraper() {
             e.printStackTrace()
         }
         return url
+    }
+
+    private fun getProductImageUrl(product: ElementHandle): String {
+        var imageUrl = "error - imageUrl"
+
+        try {
+            imageUrl = product
+                .querySelector("img")
+                .getAttribute("src")
+        } catch (e: NullPointerException) {
+            e.printStackTrace()
+        }
+
+        return imageUrl
     }
 
     override fun getProductStore() = Store.WLODARCZYK

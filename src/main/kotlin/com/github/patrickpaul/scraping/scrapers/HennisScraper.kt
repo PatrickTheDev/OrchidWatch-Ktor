@@ -25,7 +25,7 @@ class HennisScraper(private val browser: Browser) : ProductScraper() {
                         getProductURL(orchid),
                         getProductStore(),
                         getProductDate(),
-                        ""
+                        getProductImageUrl(orchid),
                     )
                 )
             }
@@ -48,6 +48,18 @@ class HennisScraper(private val browser: Browser) : ProductScraper() {
     }
 
     override fun getProductPrice(product: ElementHandle) = "Scraping the price is not possible."
+
+    private fun getProductImageUrl(product: ElementHandle): String {
+        var imageUrl = "error - imageUrl"
+
+        try {
+            /* TODO */
+        } catch (e: NullPointerException) {
+            e.printStackTrace()
+        }
+
+        return imageUrl
+    }
 
     override fun getProductStore() = Store.HENNIS
 
