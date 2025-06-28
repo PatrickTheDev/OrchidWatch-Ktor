@@ -34,19 +34,25 @@ repositories {
 val sshAntTask = configurations.create("sshAntTask")
 
 dependencies {
+    // Codec
     implementation("commons-codec:commons-codec:$commons_codec_version")
 
+    // Exposed
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposed_version")
     implementation("com.h2database:h2:$h2_version")
 
+    // Firebase
+    implementation("com.google.firebase:firebase-admin:9.5.0")
+
+    // KotlinX
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
+    // Ktor
     implementation("io.insert-koin:koin-ktor:$koin_version")
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
-
     implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-xml:$ktor_version")
@@ -54,7 +60,6 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-server-auth-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktor_version")
-
     implementation("io.ktor:ktor-server-auth:$ktor_version")
     implementation ("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
@@ -62,6 +67,7 @@ dependencies {
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 
+    // Plarwright
     implementation("com.microsoft.playwright:playwright:$playwright_version")
 
     sshAntTask("org.apache.ant:ant-jsch:1.10.12")

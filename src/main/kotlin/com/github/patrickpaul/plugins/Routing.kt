@@ -2,6 +2,7 @@ package com.github.patrickpaul.plugins
 
 import com.github.patrickpaul.data.product.ProductDataSource
 import com.github.patrickpaul.data.product.productDAO
+import com.github.patrickpaul.data.push.pushDAO
 import com.github.patrickpaul.data.scraper.ScraperDataSource
 import com.github.patrickpaul.data.scraper.scraperDAO
 import com.github.patrickpaul.data.user.UserDataSource
@@ -10,23 +11,28 @@ import com.github.patrickpaul.security.hashing.HashingService
 import com.github.patrickpaul.security.token.TokenConfig
 import com.github.patrickpaul.security.token.TokenService
 import com.github.patrickpaul.util.getKoinInstance
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.MulticastMessage
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Application.configureRouting(
+    firebaseMessaging: FirebaseMessaging,
 ) {
     routing {
         // TODO: securityRouting()
 
-        healthRouting(
-            scraperDao = scraperDAO,
-        )
+//        healthRouting(
+//            scraperDao = scraperDAO,
+//        )
 
-        productsRouting(
-            productDao = productDAO,
-        )
+//        productsRouting(
+//            productDao = productDAO,
+//        )
+
+        pushRouting(firebaseMessaging)
     }
 }
 
@@ -71,6 +77,27 @@ private fun Route.productsRouting(
                 else HttpStatusCode.NoContent
 
             call.respond(statusCode)
+        }
+    }
+}
+
+private fun Route.pushRouting(
+    firebaseMessaging: FirebaseMessaging,
+) {
+    route("/push") {
+        post {
+            call.request.queryParameters["token"]?.let { token ->
+                pushDAO.putToken(token)
+            }
+        }
+        get {
+            val tokens = pushDAO.allTokens().map { it.value }
+            val message = MulticastMessage.builder()
+                .putData("value", "test")
+                .addAllTokens(tokens)
+                .build()
+
+            firebaseMessaging.sendEachForMulticast(message)
         }
     }
 }
